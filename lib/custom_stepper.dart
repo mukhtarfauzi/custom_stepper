@@ -28,6 +28,7 @@ class _StepInherited extends InheritedWidget {
 class StepCircle extends StatelessWidget {
   final int stepValue;
   final Color? color;
+  final Color? activeColor;
   final Color? outlineColor;
   final Color? activeBackgroundColor;
   final Color? inactiveBackgroundColor;
@@ -37,6 +38,7 @@ class StepCircle extends StatelessWidget {
   const StepCircle(this.stepValue,
       {Key? key,
       this.color,
+      this.activeColor,
       this.outlineColor,
       this.activeBackgroundColor,
       this.inactiveBackgroundColor,
@@ -47,6 +49,8 @@ class StepCircle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final inheritance = _StepInherited.of(context);
+    final _color = color ?? Theme.of(context).colorScheme.primary;
+    final _activeColor = activeColor ?? Theme.of(context).scaffoldBackgroundColor;
     final _isActive = inheritance?.currentStep == stepValue;
     final _size = inheritance?.size ?? 15;
     final _direction = inheritance?.direction ?? Axis.horizontal;
@@ -65,7 +69,7 @@ class StepCircle extends StatelessWidget {
             child: Text(
               label,
               style: TextStyle(
-                color: color,
+                color: _isActive ? _activeColor : _color,
                 fontSize: _size,
                 fontWeight: FontWeight.w900,
               ),
@@ -77,7 +81,7 @@ class StepCircle extends StatelessWidget {
           decoration: BoxDecoration(
             border: Border.all(
                 color: _isActive ? _activeBackgroundColor : _backgroundColor,
-                width: 2),
+                width: 1),
             color:
                 _isActive ? _activeBackgroundColor : _inactiveBackgroundColor,
             borderRadius: BorderRadius.circular(_size * 2.14),
