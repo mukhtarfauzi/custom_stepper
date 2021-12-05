@@ -7,13 +7,10 @@ class _StepInherited extends InheritedWidget {
     Key? key,
     required Widget child,
     required this.size,
-    required this.direction,
-    this.currentStep = 0,
-  }) : super(key: key, child: child);
+    required this.direction,  }) : super(key: key, child: child);
 
   final double size;
   final Axis direction;
-  final int currentStep;
 
   static _StepInherited? of(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<_StepInherited>();
@@ -26,7 +23,6 @@ class _StepInherited extends InheritedWidget {
 }
 
 class StepCircle extends StatelessWidget {
-  final int stepValue;
   final Color? color;
   final Color? activeColor;
   final Color? outlineColor;
@@ -34,24 +30,26 @@ class StepCircle extends StatelessWidget {
   final Color? inactiveBackgroundColor;
   final String label;
   final Widget? content;
+  final bool isActive;
 
-  const StepCircle(this.stepValue,
-      {Key? key,
-      this.color,
-      this.activeColor,
-      this.outlineColor,
-      this.activeBackgroundColor,
-      this.inactiveBackgroundColor,
-      required this.label,
-      this.content})
-      : super(key: key);
+  const StepCircle({
+    Key? key,
+    this.color,
+    this.activeColor,
+    this.outlineColor,
+    this.activeBackgroundColor,
+    this.inactiveBackgroundColor,
+    required this.label,
+    this.content,
+    this.isActive = false,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final inheritance = _StepInherited.of(context);
     final _color = color ?? Theme.of(context).colorScheme.primary;
-    final _activeColor = activeColor ?? Theme.of(context).scaffoldBackgroundColor;
-    final _isActive = inheritance?.currentStep == stepValue;
+    final _activeColor =
+        activeColor ?? Theme.of(context).scaffoldBackgroundColor;
     final _size = inheritance?.size ?? 15;
     final _direction = inheritance?.direction ?? Axis.horizontal;
     final _backgroundColor =
@@ -69,7 +67,7 @@ class StepCircle extends StatelessWidget {
             child: Text(
               label,
               style: TextStyle(
-                color: _isActive ? _activeColor : _color,
+                color: isActive ? _activeColor : _color,
                 fontSize: _size,
                 fontWeight: FontWeight.w900,
               ),
@@ -80,10 +78,10 @@ class StepCircle extends StatelessWidget {
           alignment: Alignment.center,
           decoration: BoxDecoration(
             border: Border.all(
-                color: _isActive ? _activeBackgroundColor : _backgroundColor,
+                color: isActive ? _activeBackgroundColor : _backgroundColor,
                 width: 1),
             color:
-                _isActive ? _activeBackgroundColor : _inactiveBackgroundColor,
+            isActive ? _activeBackgroundColor : _inactiveBackgroundColor,
             borderRadius: BorderRadius.circular(_size * 2.14),
           ),
         ),
@@ -118,10 +116,8 @@ class CustomStepper extends StatelessWidget {
   final double size;
   final Path path;
   final bool scrollable;
-  final int currentStep;
   const CustomStepper({
     Key? key,
-    this.currentStep = 0,
     // TODO: For now only available in this [Axis.horizontal] direction
     this.direction = Axis.horizontal,
     required this.steps,
@@ -135,7 +131,6 @@ class CustomStepper extends StatelessWidget {
     return _StepInherited(
       size: size,
       direction: direction,
-      currentStep: currentStep,
       child: scrollable
           ? ListView.builder(
               scrollDirection: direction,

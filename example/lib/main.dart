@@ -24,27 +24,24 @@ class Home extends StatelessWidget {
           path: Path(color: Colors.lightBlue.shade200, width: 1.0),
           steps: const [
             StepCircle(
-              0,
               label: '1',
             ),
             StepCircle(
-              1,
               label: '2',
             ),
             StepCircle(
-              2,
               label: '3',
-            ),StepCircle(
-              3,
+            ),
+            StepCircle(
               label: '4',
-            ),StepCircle(
-              4,
+            ),
+            StepCircle(
               label: '5',
-            ),StepCircle(
-              5,
+            ),
+            StepCircle(
               label: '6',
-            ),StepCircle(
-              6,
+            ),
+            StepCircle(
               label: '7',
             ),
           ],
